@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Anagrams",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "jp.shibadog.learn.effective.Anagrams",
+            "args": "",
+            "projectName": "effective-java-learn"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Application",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "jp.shibadog.learn.effective.Application",
+            "args": "",
+            "projectName": "effective-java-learn"
+        }
+    ]
+}

@@ -9,7 +9,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application {
 
     @Autowired
-    private Anagrams service;
+    private Anagrams anagrams;
+    
+    @Autowired
+    private Mersenne mersenne;
+
+    @Autowired
+    private CartesianProduct cartesian;
 
     public static void main(String[] args) {
         System.out.println("main()");
@@ -22,6 +28,8 @@ public class Application {
     }
 
     private void run(String[] args) {
-        service.run(args);
+        // anagrams.run(args);
+        // mersenne.run();
+        cartesian.run();
     }
 }

@@ -1,12 +1,11 @@
 package jp.shibadog.learn.effective;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -14,14 +13,33 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
 public class Anagrams {
+
+    public void run(String[] args) {
+        List<String> file = Arrays.asList(
+            "english",
+            "shingle",
+            "server",
+            "revers",
+            "habit",
+            "tailor"
+        );
+        Reader in = new StringReader(file.stream().collect(Collectors.joining("\n")));
+        // run1(in, 2);
+        // run2(in, 2);
+        run3(in, 2);
+    }
+
     // 辞書内の大きなアナグラムのグループを全て繰り返し表示する。
-    public static void main(String[] args)  throws IOException {
-        File dictionary = new File(args[0]);
-        int minGroupSize = Integer.parseInt(args[1]);
-        
+    public void run1(Reader in, int minGroupSize) {
         Map<String, Set<String>> groups = new HashMap<>();
-        try (Scanner s = new Scanner(dictionary)) {
+        try (Scanner s = new Scanner(in)) {
             while (s.hasNext()) {
                 String word = s.next();
                 groups.computeIfAbsent(alphabetize(word),
@@ -31,16 +49,13 @@ public class Anagrams {
 
         for (Set<String> group : groups.values()) {
             if (group.size() >= minGroupSize)
-                System.out.println(group.size() + ": " + group);
+                log.info(group.size() + ": " + group);
         }
     }
 
     // ストリームの乱用 - これを行ってはいけない
-    public static void main2(String[] args)  throws IOException {
-        Path dictionary = Paths.get(args[0]);
-        int minGroupSize = Integer.parseInt(args[1]);
-        
-        try (Stream<String> words = Files.lines(dictionary)) {
+    public void run2(Reader in, int minGroupSize) {
+        try (Stream<String> words = new BufferedReader(in).lines()) {
             words.collect(
                 Collectors.groupingBy(word -> word.chars().sorted()
                     .collect(StringBuilder::new,
@@ -49,24 +64,21 @@ public class Anagrams {
             .values().stream()
                 .filter(group -> group.size() >= minGroupSize)
                 .map(group -> group.size() + ": " + group)
-                .forEach(System.out::println);
+                .forEach(log::info);
         }
     }
 
     // ストリームの感じの良い使い方は明瞭さと簡潔さを高めます
-    public static void main3(String[] args)  throws IOException {
-        Path dictionary = Paths.get(args[0]);
-        int minGroupSize = Integer.parseInt(args[1]);
-        
-        try (Stream<String> words = Files.lines(dictionary)) {
+    public void run3(Reader in, int minGroupSize) {
+        try (Stream<String> words = new BufferedReader(in).lines()) {
             words.collect(Collectors.groupingBy(word -> alphabetize(word)))
                 .values().stream()
                 .filter(group -> group.size() >= minGroupSize)
-                .forEach(g -> System.out.println(g.size() + ": " + g));
+                .forEach(g -> log.info(g.size() + ": " + g));
         }
     }
 
-    private static String alphabetize(String s) {
+    private String alphabetize(String s) {
         char[] a = s.toCharArray();
         Arrays.sort(a);
         return new String(a);

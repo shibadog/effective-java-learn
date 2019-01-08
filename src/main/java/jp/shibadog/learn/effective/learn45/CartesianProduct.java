@@ -1,4 +1,4 @@
-package jp.shibadog.learn.effective;
+package jp.shibadog.learn.effective.learn45;
 
 import java.util.ArrayList;
 import java.util.List;

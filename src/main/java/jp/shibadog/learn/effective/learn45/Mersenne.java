@@ -1,4 +1,4 @@
-package jp.shibadog.learn.effective;
+package jp.shibadog.learn.effective.learn45;
 
 import java.math.BigInteger;
 import java.util.stream.Stream;
